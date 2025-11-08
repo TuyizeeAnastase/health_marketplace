@@ -1,0 +1,69 @@
+.pharmacy-container {
+  padding: 40px 20px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.pharmacy-container h2 {
+  text-align: center;
+  margin-bottom: 10px;
+  color: #003366;
+}
+
+.user-location {
+  text-align: center;
+  font-size: 14px;
+  margin-bottom: 25px;
+  color: #555;
+}
+
+.pharmacy-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 25px;
+}
+
+.pharmacy-card {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.pharmacy-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.pharmacy-card img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+}
+
+.pharmacy-info {
+  padding: 15px;
+}
+
+.pharmacy-info h3 {
+  color: #0066cc;
+  margin-bottom: 5px;
+}
+
+.pharmacy-info p {
+  font-size: 14px;
+  color: #444;
+  margin: 3px 0;
+}
+
+.distance {
+  font-weight: bold;
+  color: #008000;
+}
+
+.phone {
+  color: #333;
+  font-style: italic;
+}

@@ -1,0 +1,70 @@
+.home-container {
+  min-height: 100vh;
+  background-image: url("https://images.unsplash.com/photo-1584036561566-baf8f5f1b144"); /* sample hospital background */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* optional dark overlay for better text contrast */
+.home-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.hero {
+  position: relative;
+  text-align: center;
+  color: white;
+  z-index: 2;
+  max-width: 700px;
+  padding: 40px;
+}
+
+.hero h1 {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  margin-bottom: 25px;
+  color: #f0f0f0;
+}
+
+.home-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.btn {
+  background-color: #0066cc;
+  color: white;
+  padding: 12px 25px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #004d99;
+}
+
+.btn.secondary {
+  background-color: #00b386;
+}
+
+.btn.secondary:hover {
+  background-color: #008060;
+}
