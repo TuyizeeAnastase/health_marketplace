@@ -1,19 +1,28 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import './Navbar.css';
 
 function Navbar() {
   return (
-    <nav className="navbar">
-      <div className="nav-logo">MediConnect</div>
-      <ul className="nav-links">
-        <li><Link to="/">Home</Link></li>
-        <li><Link to="/pharmacies">Pharmacies</Link></li>
-        <li><Link to="/hospitals">Hospitals</Link></li>
-        <li><Link to="/profile">Profile</Link></li>
-        <li><Link to="/login">Login</Link></li>
-      </ul>
-    </nav>
+    <header className="header">
+      <div className="header-container">
+        <div className="logo">
+          <Link to="/">HealthMarketplace</Link>
+        </div>
+        <nav className="nav-links">
+          <NavLink to="/" end>Home</NavLink>
+          <NavLink to="/pharmacies">Pharmacies</NavLink>
+          <NavLink to="/hospitals">Hospitals</NavLink>
+          <NavLink to="/doctors">Doctors</NavLink>
+          <NavLink to="/medicines">Medicines</NavLink>
+        </nav>
+
+        <div className="auth-buttons">
+          <Link to="/login" className="btn login-btn">Login</Link>
+          <Link to="/register" className="btn register-btn">Register</Link>
+        </div>
+      </div>
+    </header>
   );
 }
 

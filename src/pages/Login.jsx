@@ -50,6 +50,12 @@ function Login() {
 
       {step === 2 && (
         <div className="login-step">
+          <label>Phone Number</label>
+          <input
+            type="text"
+            name="phone"
+            placeholder="Enter your phone number"
+          />
           <label>Enter OTP</label>
           <input
             type="text"

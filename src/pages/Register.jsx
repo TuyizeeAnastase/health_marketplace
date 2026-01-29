@@ -89,6 +89,17 @@ function Register() {
       )}
 
       {step === 2 && (
+        <>
+        <div className="register-step">
+          <label>Phone Number</label>
+          <input
+            type="text"
+            name="phone"
+            placeholder="Enter your phone number"
+            value={formData.phone}
+            onChange={handleChange}
+          />
+          </div>
         <div className="register-step">
           <label>Enter OTP</label>
           <input
@@ -100,6 +111,7 @@ function Register() {
           />
           <button onClick={verifyOtp}>Verify OTP</button>
         </div>
+        </>
       )}
 
       {step === 3 && (
@@ -126,7 +138,16 @@ function Register() {
               Vendor
             </label>
           </div>
-
+          <div className="register-step">
+          <label>Phone Number</label>
+          <input
+            type="text"
+            name="phone"
+            placeholder="Enter your phone number"
+            value={formData.phone}
+            onChange={handleChange}
+          />
+          </div>
           <label>Full Name</label>
           <input
             type="text"
