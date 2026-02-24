@@ -1,53 +1,35 @@
+.vendor-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.vendor-tabs button {
+  padding: 8px 15px;
+  border: none;
+  cursor: pointer;
+  background: #ddd;
+  border-radius: 6px;
+}
+
+.vendor-tabs button.active {
+  background: #007bff;
+  color: white;
+}
+
 .register-container {
-  background: linear-gradient(to bottom right, #0077b6, #48cae4);
-  padding: 30px;
-  width: 420px;
-  margin: 40px auto;
-  border-radius: 14px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  color: #fff;
+  width: 400px;
+  margin: auto;
 }
 
-.register-container h2 {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-form {
+.register-form {
   display: flex;
   flex-direction: column;
+  gap: 10px;
 }
 
-label {
-  margin: 10px 0 4px;
-  font-weight: 500;
-}
-
-input {
-  padding: 10px;
-  border: none;
-  border-radius: 6px;
-  margin-bottom: 12px;
-  margin-left: 10px;
-  margin-right: 10px;
-  font-size: 15px;
-}
-
-input[readonly] {
-  background-color: #caf0f8;
-  color: #03045e;
-}
-
-.btn {
-  background-color: #023e8a;
-  color: white;
-  padding: 12px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-.btn:hover {
-  background-color: #03045e;
+.register-step {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }

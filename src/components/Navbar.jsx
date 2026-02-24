@@ -18,8 +18,7 @@ function Navbar() {
         </nav>
 
         <div className="auth-buttons">
-          <Link to="/login" className="btn login-btn">Login</Link>
-          <Link to="/register" className="btn register-btn">Register</Link>
+          <Link to="/login" className="btn login-btn">Login/Become a partner</Link>
         </div>
       </div>
     </header>

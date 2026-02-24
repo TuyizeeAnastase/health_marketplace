@@ -69,7 +69,7 @@ function Login() {
       )}
 
       <p className="login-footer">
-        Don’t have an account? <a href="/register">Register here</a>
+        Don’t have an account? <a href="/register">Become a partner</a>
       </p>
     </div>
   );

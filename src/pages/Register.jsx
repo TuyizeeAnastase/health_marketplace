@@ -1,49 +1,47 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "./Register.css";
+import "./registration";
 
 function Register() {
-  const [step, setStep] = useState(1); // Step 1: phone, Step 2: OTP, Step 3: details
-  const [userType, setUserType] = useState("user");
+  const [vendorTab, setVendorTab] = useState("hospital");
+  const [success, setSuccess] = useState(false);
+
   const [formData, setFormData] = useState({
     phone: "",
-    otp: "",
     name: "",
     email: "",
-    insurance: "",
     businessName: "",
-    businessType: "",
+    businessType: "hospital",
     location: "",
+    hospitalLicense: "",
+    numberOfDoctors: "",
+    pharmacyLicense: "",
+    operatingHours: "",
   });
 
-  // Auto-detect location for vendors
+  // Auto-detect location
   useEffect(() => {
-    if (userType === "vendor" && navigator.geolocation) {
+    if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         async (position) => {
-          const lat = position.coords.latitude;
-          const lon = position.coords.longitude;
+          const { latitude, longitude } = position.coords;
 
           try {
             const response = await axios.get(
-              `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`
+              `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
             );
-            const location = response.data.display_name;
+
             setFormData((prev) => ({
               ...prev,
-              location,
+              location: response.data.display_name,
             }));
           } catch (error) {
-            console.error("Error fetching location:", error);
+            console.error("Location fetch error:", error);
           }
-        },
-        (error) => {
-          console.error("Error getting location:", error);
-          alert("Please enable location access to auto-fill your address.");
         }
       );
     }
-  }, [userType]);
+  }, []);
 
   const handleChange = (e) => {
     setFormData({
@@ -52,171 +50,160 @@ function Register() {
     });
   };
 
-  const sendOtp = () => {
-    if (!formData.phone) return alert("Enter phone number");
-    setStep(2);
-    alert("OTP sent to " + formData.phone);
-  };
-
-  const verifyOtp = () => {
-    if (!formData.otp) return alert("Enter OTP");
-    setStep(3);
-    alert("OTP verified");
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert("Registration complete for " + userType);
     console.log(formData);
+    setSuccess(true);
   };
 
   return (
-    <div className="register-container">
-      <h2>Create Account</h2>
+    <div className="container">
+      <div className="card">
+        {!success ? (
+          <>
+            <h1>Health Marketplace</h1>
 
-      {step === 1 && (
-        <div className="register-step">
-          <label>Phone Number</label>
-          <input
-            type="text"
-            name="phone"
-            placeholder="Enter your phone number"
-            value={formData.phone}
-            onChange={handleChange}
-          />
-          <button onClick={sendOtp}>Send OTP</button>
-        </div>
-      )}
+            <div className="steps">
+              Register your hospital or pharmacy
+            </div>
 
-      {step === 2 && (
-        <>
-        <div className="register-step">
-          <label>Phone Number</label>
-          <input
-            type="text"
-            name="phone"
-            placeholder="Enter your phone number"
-            value={formData.phone}
-            onChange={handleChange}
-          />
-          </div>
-        <div className="register-step">
-          <label>Enter OTP</label>
-          <input
-            type="text"
-            name="otp"
-            placeholder="Enter received OTP"
-            value={formData.otp}
-            onChange={handleChange}
-          />
-          <button onClick={verifyOtp}>Verify OTP</button>
-        </div>
-        </>
-      )}
+            <form className="form" onSubmit={handleSubmit}>
+              <h2>Business Registration</h2>
 
-      {step === 3 && (
-        <form className="register-form" onSubmit={handleSubmit}>
-          <div className="user-type">
-            <label>
-              <input
-                type="radio"
-                name="type"
-                value="user"
-                checked={userType === "user"}
-                onChange={() => setUserType("user")}
-              />
-              Normal User
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="type"
-                value="vendor"
-                checked={userType === "vendor"}
-                onChange={() => setUserType("vendor")}
-              />
-              Vendor
-            </label>
-          </div>
-          <div className="register-step">
-          <label>Phone Number</label>
-          <input
-            type="text"
-            name="phone"
-            placeholder="Enter your phone number"
-            value={formData.phone}
-            onChange={handleChange}
-          />
-          </div>
-          <label>Full Name</label>
-          <input
-            type="text"
-            name="name"
-            placeholder="Enter your full name"
-            value={formData.name}
-            onChange={handleChange}
-            required
-          />
-
-          <label>Email</label>
-          <input
-            type="email"
-            name="email"
-            placeholder="Enter your email"
-            value={formData.email}
-            onChange={handleChange}
-          />
-
-          {userType === "user" && (
-            <>
-              <label>Insurance Company</label>
               <input
                 type="text"
-                name="insurance"
-                placeholder="Enter your insurance provider"
-                value={formData.insurance}
+                name="phone"
+                placeholder="Phone Number"
+                value={formData.phone}
+                onChange={handleChange}
+                required
+              />
+
+              <input
+                type="text"
+                name="name"
+                placeholder="Contact Person Name"
+                value={formData.name}
+                onChange={handleChange}
+                required
+              />
+
+              <input
+                type="email"
+                name="email"
+                placeholder="Email Address"
+                value={formData.email}
                 onChange={handleChange}
               />
-            </>
-          )}
 
-          {userType === "vendor" && (
-            <>
-              <label>Business Name</label>
+              {/* Tabs */}
+              <div className="role-switch">
+                <button
+                  type="button"
+                  className={vendorTab === "hospital" ? "active" : ""}
+                  onClick={() => {
+                    setVendorTab("hospital");
+                    setFormData({
+                      ...formData,
+                      businessType: "hospital",
+                    });
+                  }}
+                >
+                  Hospital
+                </button>
+
+                <button
+                  type="button"
+                  className={vendorTab === "pharmacy" ? "active" : ""}
+                  onClick={() => {
+                    setVendorTab("pharmacy");
+                    setFormData({
+                      ...formData,
+                      businessType: "pharmacy",
+                    });
+                  }}
+                >
+                  Pharmacy
+                </button>
+              </div>
+
               <input
                 type="text"
                 name="businessName"
-                placeholder="Enter your business name"
+                placeholder={`${
+                  vendorTab === "hospital"
+                    ? "Hospital Name"
+                    : "Pharmacy Name"
+                }`}
                 value={formData.businessName}
                 onChange={handleChange}
+                required
               />
 
-              <label>Business Type</label>
-              <select
-                name="businessType"
-                value={formData.businessType}
-                onChange={handleChange}
-              >
-                <option value="">Select type</option>
-                <option value="pharmacy">Pharmacy</option>
-                <option value="hospital">Hospital</option>
-              </select>
+              {/* Hospital Fields */}
+              {vendorTab === "hospital" && (
+                <>
+                  <input
+                    type="text"
+                    name="hospitalLicense"
+                    placeholder="Hospital License Number"
+                    value={formData.hospitalLicense}
+                    onChange={handleChange}
+                    required
+                  />
 
-              <label>Detected Location</label>
+                  <input
+                    type="number"
+                    name="numberOfDoctors"
+                    placeholder="Number of Doctors"
+                    value={formData.numberOfDoctors}
+                    onChange={handleChange}
+                    required
+                  />
+                </>
+              )}
+
+              {/* Pharmacy Fields */}
+              {vendorTab === "pharmacy" && (
+                <>
+                  <input
+                    type="text"
+                    name="pharmacyLicense"
+                    placeholder="Pharmacy License Number"
+                    value={formData.pharmacyLicense}
+                    onChange={handleChange}
+                    required
+                  />
+
+                  <input
+                    type="text"
+                    name="operatingHours"
+                    placeholder="Operating Hours (8AM - 10PM)"
+                    value={formData.operatingHours}
+                    onChange={handleChange}
+                    required
+                  />
+                </>
+              )}
+
               <input
                 type="text"
                 name="location"
-                placeholder="Auto-detected location"
+                placeholder="Detected Location"
                 value={formData.location}
-                onChange={handleChange}
                 readOnly
               />
-            </>
-          )}
 
-          <button type="submit">Register</button>
-        </form>
-      )}
+              <button type="submit">Register Business</button>
+            </form>
+          </>
+        ) : (
+          <div className="success">
+            <h2>Registration Successful 🎉</h2>
+            <p>Your business has been submitted for review.</p>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

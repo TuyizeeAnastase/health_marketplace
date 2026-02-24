@@ -12,7 +12,7 @@ import HospitalDetail from './pages/HospitalDetail';
 import Profile from './pages/UserProfile';
 import PharmacyDashboard from './pages/Dashboard/PharmacyDashboard';
 import HospitalDashboard from './pages/Dashboard/HospitalDashboard';
-import Registration from './pages/registration';
+import Registration from './pages/Register';
 
 
 function App() {
