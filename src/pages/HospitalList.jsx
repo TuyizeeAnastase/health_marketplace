@@ -4,6 +4,7 @@ import "./Hospitals.css";
 function NearbyHospitals() {
   const [userLocation, setUserLocation] = useState(null);
   const [hospitals, setHospitals] = useState([]);
+  const [filteredHospitals, setFilteredHospitals] = useState([]);
   const [selectedHospital, setSelectedHospital] = useState(null);
   const [selectedDoctor, setSelectedDoctor] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -12,9 +13,9 @@ function NearbyHospitals() {
     date: "",
     time: "",
   });
+  const [categoryFilter, setCategoryFilter] = useState("All");
 
   useEffect(() => {
-    // Mock hospital data
     const sampleHospitals = [
       {
         id: 1,
@@ -23,6 +24,7 @@ function NearbyHospitals() {
         address: "KN 5 Rd, Kigali",
         distance: "1.1 km",
         phone: "+250 788 100 111",
+        category: "Cardiology",
         doctors: [
           { id: 1, name: "Dr. Alice Mukamana", specialty: "Cardiologist" },
           { id: 2, name: "Dr. John Nkurunziza", specialty: "General Physician" },
@@ -35,6 +37,7 @@ function NearbyHospitals() {
         address: "KG 15 Ave, Remera",
         distance: "2.0 km",
         phone: "+250 781 555 666",
+        category: "Pediatrics",
         doctors: [
           { id: 3, name: "Dr. Claudine Uwimana", specialty: "Pediatrician" },
           { id: 4, name: "Dr. Eric Ndayambaje", specialty: "Dermatologist" },
@@ -47,6 +50,7 @@ function NearbyHospitals() {
         address: "KK 31 Ave, Kanombe",
         distance: "5.3 km",
         phone: "+250 788 777 888",
+        category: "Orthopedic",
         doctors: [
           { id: 5, name: "Dr. Grace Tuyishime", specialty: "Orthopedic Surgeon" },
           { id: 6, name: "Dr. Patrick Karangwa", specialty: "ENT Specialist" },
@@ -55,6 +59,7 @@ function NearbyHospitals() {
     ];
 
     setHospitals(sampleHospitals);
+    setFilteredHospitals(sampleHospitals);
 
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((pos) => {
@@ -65,6 +70,14 @@ function NearbyHospitals() {
       });
     }
   }, []);
+
+  // Filter hospitals by category
+  const handleFilterChange = (category) => {
+    setCategoryFilter(category);
+    if (category === "All") setFilteredHospitals(hospitals);
+    else
+      setFilteredHospitals(hospitals.filter((h) => h.category === category));
+  };
 
   const handleHospitalClick = (hospital) => {
     setSelectedHospital(hospital);
@@ -97,25 +110,41 @@ function NearbyHospitals() {
         <p className="user-location">Detecting your location...</p>
       )}
 
-      {!selectedHospital ? (
-        <div className="hospital-grid">
-          {hospitals.map((hospital) => (
-            <div
-              key={hospital.id}
-              className="hospital-card"
-              onClick={() => handleHospitalClick(hospital)}
-            >
-              <img src={hospital.image} alt={hospital.name} />
-              <div className="hospital-info">
-                <h3>{hospital.name}</h3>
-                <p>{hospital.address}</p>
-                <p className="distance">📍 {hospital.distance}</p>
-                <p className="phone">📞 {hospital.phone}</p>
+      {!selectedHospital && (
+        <>
+          <div className="filter-buttons">
+            {["All", "Cardiology", "Pediatrics", "Orthopedic"].map((cat) => (
+              <button
+                key={cat}
+                className={categoryFilter === cat ? "active" : ""}
+                onClick={() => handleFilterChange(cat)}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+
+          <div className="hospital-grid">
+            {filteredHospitals.map((hospital) => (
+              <div
+                key={hospital.id}
+                className="hospital-card"
+                onClick={() => handleHospitalClick(hospital)}
+              >
+                <img src={hospital.image} alt={hospital.name} />
+                <div className="hospital-info">
+                  <h3>{hospital.name}</h3>
+                  <p>{hospital.address}</p>
+                  <p className="distance">📍 {hospital.distance}</p>
+                  <p className="phone">📞 {hospital.phone}</p>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
-      ) : (
+            ))}
+          </div>
+        </>
+      )}
+
+      {selectedHospital && (
         <div className="hospital-details">
           <button className="back-btn" onClick={() => setSelectedHospital(null)}>
             ← Back to Hospitals
