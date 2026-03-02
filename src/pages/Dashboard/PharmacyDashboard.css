@@ -1,0 +1,58 @@
+.pharmacy-dashboard {
+  min-height: 100vh;
+  background: #f4f7fb;
+  padding: 50px 20px;
+  font-family: Arial, sans-serif;
+}
+
+.dashboard-header {
+  background: white;
+  padding: 20px 30px;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(300px,1fr)); gap: 20px; margin-bottom: 30px; }
+.card { background: white; padding: 20px; border-radius: 16px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+
+.table-container {
+  width: 90%;
+  margin: 0 auto 50px auto;
+  background: white;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+th, td {
+  padding: 12px;
+  border-bottom: 1px solid #e3e3e3;
+}
+
+th {
+  background-color: #f0f4f8;
+}
+
+.status-delivered { color: #27ae60; font-weight: bold; }
+.status-pending { color: #f2994a; font-weight: bold; }
+
+.btn-small {
+  background: #2d9cdb;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn-small:hover {
+  background: #238ac9;
+}

@@ -18,6 +18,7 @@ import DoctorDetail from "./pages/Doctor_details"
 import MedicinesList from "./pages/MedicinesList";
 import MedicineDetail from "./pages/MedicineDetail";
 import About from "./pages/About"
+import PatientDashboard from './pages/Dashboard/Patient';
 
 
 function App() {
@@ -41,6 +42,7 @@ function App() {
           <Route path="/dashboard/pharmacy" element={<PharmacyDashboard />} />
           <Route path="/dashboard/hospital" element={<HospitalDashboard />} />
           <Route path="/about" element={<About/>}/>
+          <Route path="/patient" element={<PatientDashboard/>}/>
         </Routes>
       <Footer />
     </Router>
