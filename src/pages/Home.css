@@ -6,15 +6,16 @@ body {
 
 /* HERO SECTION */
 .hero {
-  background: linear-gradient(135deg, #0ea5e9, #14b8a6);
+  background: linear-gradient(135deg, #36515e, #14b8a6);
   padding: 100px 20px;
   text-align: center;
-  color: white;
+  color: #ffff;
 }
 
 .hero h1 {
   font-size: 36px;
   margin-bottom: 15px;
+  color: #f4f9ff;
 }
 
 .hero p {

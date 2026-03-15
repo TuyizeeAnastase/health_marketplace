@@ -3,8 +3,7 @@ import { Link, NavLink } from "react-router-dom";
 import "./Navbar.css";
 
 function Navbar() {
-  const [hospitalOpen, setHospitalOpen] = useState(false);
-  const [pharmacyOpen, setPharmacyOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <header className="header">
@@ -13,46 +12,12 @@ function Navbar() {
           <Link to="/">HealthMarketplace</Link>
         </div>
 
-        <nav className="nav-links">
-
-          <NavLink to="/" end>Home</NavLink>
-
-          {/* Hospitals Dropdown */}
-          <div
-            className="dropdown"
-            onMouseEnter={() => setHospitalOpen(true)}
-            onMouseLeave={() => setHospitalOpen(false)}
-          >
-            <span className="dropbtn">Hospitals ▾</span>
-            {hospitalOpen && (
-              <div className="dropdown-content">
-                <Link to="/hospitals">Pediatrics</Link>
-                <Link to="/hospitals/cardiology">Cardiology</Link>
-                <Link to="/hospitals/maternity">Maternity</Link>
-                <Link to="/hospitals/dermatology">Dermatology</Link>
-              </div>
-            )}
-          </div>
-
-          {/* Pharmacy Dropdown */}
-          <div
-            className="dropdown"
-            onMouseEnter={() => setPharmacyOpen(true)}
-            onMouseLeave={() => setPharmacyOpen(false)}
-          >
-            <span className="dropbtn">Pharmacy ▾</span>
-            {pharmacyOpen && (
-              <div className="dropdown-content">
-                <Link to="/pharmacies/pain-relief">Pain Relief</Link>
-                <Link to="/pharmacies/vitamins">Vitamins</Link>
-                <Link to="/pharmacies/baby-care">Baby Care</Link>
-                <Link to="/pharmacies/equipment">Medical Equipment</Link>
-              </div>
-            )}
-          </div>
-
-          <NavLink to="/doctors">Doctors</NavLink>
-          <NavLink to="/medicines">Medicines</NavLink>
+        <nav className={`nav-links ${menuOpen ? "open" : ""}`}>
+          <NavLink to="/" end onClick={() => setMenuOpen(false)}>Home</NavLink>
+          <NavLink to="/hospitals"  onClick={() => setMenuOpen(false)}>Hospitals</NavLink>
+          <NavLink to="/pharmacies" onClick={() => setMenuOpen(false)}>Pharmacies</NavLink>
+          <NavLink to="/doctors"    onClick={() => setMenuOpen(false)}>Doctors</NavLink>
+          <NavLink to="/medicines"  onClick={() => setMenuOpen(false)}>Medicines</NavLink>
         </nav>
 
         <div className="auth-buttons">

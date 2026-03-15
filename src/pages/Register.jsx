@@ -2,9 +2,14 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./registration";
 
+const HOSPITAL_API  = "http://localhost:3500/api/v1/hospitals";
+const PHARMACY_API  = "http://localhost:3500/api/v1/pharmacies";
+
 function Register() {
   const [vendorTab, setVendorTab] = useState("hospital");
-  const [success, setSuccess] = useState(false);
+  const [success, setSuccess]     = useState(false);
+  const [loading, setLoading]     = useState(false);
+  const [error, setError]         = useState("");
 
   const [formData, setFormData] = useState({
     phone: "",
@@ -25,12 +30,10 @@ function Register() {
       navigator.geolocation.getCurrentPosition(
         async (position) => {
           const { latitude, longitude } = position.coords;
-
           try {
             const response = await axios.get(
               `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
             );
-
             setFormData((prev) => ({
               ...prev,
               location: response.data.display_name,
@@ -44,16 +47,48 @@ function Register() {
   }, []);
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
-    setSuccess(true);
+    setError("");
+    setLoading(true);
+
+    try {
+      if (vendorTab === "hospital") {
+        // ── Hospital payload ────────────────────────────────
+        await axios.post(HOSPITAL_API, {
+          name:          formData.businessName,
+          email:         formData.email,
+          phone:         formData.phone,
+          address:       formData.location,
+          licence:       formData.hospitalLicense,
+          is_active:     false,
+        });
+
+      } else {
+        // ── Pharmacy payload ────────────────────────────────
+        await axios.post(PHARMACY_API, {
+          name:          formData.businessName,
+          email:         formData.email,
+          phone:         formData.phone,
+          address:       formData.location,
+          licence:       formData.pharmacyLicense,
+          is_active:     false,
+        });
+      }
+
+      setSuccess(true);
+
+    } catch (err) {
+      const msg =
+        err?.response?.data?.message ||
+        "Registration failed. Please try again.";
+      setError(msg);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -66,6 +101,13 @@ function Register() {
             <div className="steps">
               Register your hospital or pharmacy
             </div>
+
+            {/* Error message */}
+            {error && (
+              <div style={{ color: "red", marginBottom: 12, fontSize: 14 }}>
+                ⚠️ {error}
+              </div>
+            )}
 
             <form className="form" onSubmit={handleSubmit}>
               <h2>Business Registration</h2>
@@ -103,10 +145,7 @@ function Register() {
                   className={vendorTab === "hospital" ? "active" : ""}
                   onClick={() => {
                     setVendorTab("hospital");
-                    setFormData({
-                      ...formData,
-                      businessType: "hospital",
-                    });
+                    setFormData({ ...formData, businessType: "hospital" });
                   }}
                 >
                   Hospital
@@ -117,10 +156,7 @@ function Register() {
                   className={vendorTab === "pharmacy" ? "active" : ""}
                   onClick={() => {
                     setVendorTab("pharmacy");
-                    setFormData({
-                      ...formData,
-                      businessType: "pharmacy",
-                    });
+                    setFormData({ ...formData, businessType: "pharmacy" });
                   }}
                 >
                   Pharmacy
@@ -131,9 +167,7 @@ function Register() {
                 type="text"
                 name="businessName"
                 placeholder={`${
-                  vendorTab === "hospital"
-                    ? "Hospital Name"
-                    : "Pharmacy Name"
+                  vendorTab === "hospital" ? "Hospital Name" : "Pharmacy Name"
                 }`}
                 value={formData.businessName}
                 onChange={handleChange}
@@ -152,14 +186,7 @@ function Register() {
                     required
                   />
 
-                  <input
-                    type="number"
-                    name="numberOfDoctors"
-                    placeholder="Number of Doctors"
-                    value={formData.numberOfDoctors}
-                    onChange={handleChange}
-                    required
-                  />
+            
                 </>
               )}
 
@@ -174,15 +201,6 @@ function Register() {
                     onChange={handleChange}
                     required
                   />
-
-                  <input
-                    type="text"
-                    name="operatingHours"
-                    placeholder="Operating Hours (8AM - 10PM)"
-                    value={formData.operatingHours}
-                    onChange={handleChange}
-                    required
-                  />
                 </>
               )}
 
@@ -194,7 +212,9 @@ function Register() {
                 readOnly
               />
 
-              <button type="submit">Register Business</button>
+              <button type="submit" disabled={loading}>
+                {loading ? "Submitting..." : "Register Business"}
+              </button>
             </form>
           </>
         ) : (
